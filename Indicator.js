@@ -1,20 +1,13 @@
-function indicator(...args){
+var logMessage = require('./logMessage');
 
-    var indicate = false;
-    args.forEach((Stats)=>{
-        if(Stats.breach === true) 
-            console.error(`${Stats.parameter}: \` ${Stats.value} \` is out of range!`),indicate = true;
-        else if(Stats.alert === "Normal")
-            console.log(`${Stats.parameter}: \` ${Stats.value} \` is Normal`);
-        else{
-            var message = (Stats.alert === "Low") ?`Warning: ${Stats.parameter} \` ${Stats.value} \` Approaching discharge`:`Warning: ${Stats.parameter} \` ${Stats.value} \` Approaching charge-peak`;
-            console.warn(message)
-            indicate = true;
-        }
+function indicator(...args) {
+    var indicate = "Normal";
+    args.forEach((Stats) => {
+        let temp = logMessage(Stats);
+        indicate = (indicate == "Abnormal")?indicate:temp;
     });
 
-    return (indicate === true)?"Abnormal":"Normal";
+    return indicate;
 }
 
 module.exports = indicator;
-
